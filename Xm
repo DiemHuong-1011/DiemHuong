@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xuân Mai</title></title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    height: 100vh;
+    background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  h1 {
+    font-size: 1.6em;
+    text-align: center;
+    opacity: 0;
+    animation: fadeIn 3s ease forwards;
+    max-width: 90%;
+    line-height: 1.6;
+  }
+  button {
+    margin-top: 20px;
+    background: #ff4d6d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1em;
+    display: none;
+    transition: 0.3s;
+  }
+  button:hover {
+    background: #ff758f;
+    transform: scale(1.05);
+  }
+  .heart {
+    position: absolute;
+    color: #ff4d6d;
+    animation: floatUp 6s linear infinite;
+    font-size: 20px;
+    opacity: 0.8;
+  }
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes floatUp {
+    from { transform: translateY(100vh) scale(0.8); opacity: 1; }
+    to { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+  }
+  canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="stars"></canvas>
+
+<h1 id="text"></h1>
+<button id="whyBtn">Tại sao?</button>
+
+<script>
+// 🌌 Hiệu ứng sao
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+canvas.width = innerWidth;
+canvas.height = innerHeight;
+let stars = [];
+for (let i = 0; i < 150; i++) {
+  stars.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.5,
+    d: Math.random() * 0.5
+  });
+}
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = 'white';
+  ctx.beginPath();
+  for (let i = 0; i < stars.length; i++) {
+    const s = stars[i];
+    ctx.moveTo(s.x, s.y);
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+  }
+  ctx.fill();
+  moveStars();
+}
+function moveStars() {
+  for (let i = 0; i < stars.length; i++) {
+    stars[i].y += stars[i].d;
+    if (stars[i].y > canvas.height) stars[i].y = 0;
+  }
+}
+setInterval(drawStars, 60);
+
+// ✨ Hiệu ứng gõ chữ
+const textElement = document.getElementById("text");
+const whyBtn = document.getElementById("whyBtn");
+const message1 = 'Tớ muốn nói là: "Thích Mai giống như cuộc kháng chiến chống Pháp vậy á..."';
+const message2 = 'Tại vì nó lâu dài và kiên định ❤️‍🔥';
+
+let index = 0;
+function typeMessage(msg, callback) {
+  if (index < msg.length) {
+    textElement.innerHTML += msg.charAt(index);
+    index++;
+    setTimeout(() => typeMessage(msg, callback), 100); // tốc độ chậm hơn
+  } else if (callback) {
+    callback();
+  }
+}
+
+// Gõ phần đầu, sau đó hiện nút “Tại sao?”
+setTimeout(() => {
+  textElement.style.opacity = "1";
+  typeMessage(message1, () => {
+    setTimeout(() => whyBtn.style.display = "inline-block", 1000);
+  });
+}, 1500);
+
+// Khi bấm “Tại sao?” thì hiện dòng cuối
+whyBtn.onclick = () => {
+  whyBtn.style.display = "none";
+  index = 0;
+  textElement.innerHTML = '';
+  typeMessage(message2);
+};
+
+// ❤️ Tim bay
+function createHeart() {
+  const heart = document.createElement('div');
+  heart.classList.add('heart');
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.style.animationDuration = Math.random() * 2 + 4 + 's';
+  heart.innerHTML = '❤️';
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 6000);
+}
+setInterval(createHeart, 800);
+</script>
+
+</body>
+</html>
+
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin 
